@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "About";
+}
+<h2>@ViewBag.Title.</h2>
+<hr/>
+
+<!-- #region PQ Change -->
+<h3>Your password will expiere in @ViewData["PasswordWillExpiere"] days.</h3>
+@if ((int)ViewData["PasswordWillExpiere"] < 40)
+{
+    <div class="alert alert-danger">Consider to change your password.</div>
+}
+<!-- #endregion PQ Change-->
