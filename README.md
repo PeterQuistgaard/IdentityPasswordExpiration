@@ -39,7 +39,7 @@ All changes is marked with "region PQ Change"
     
 ```
 
-**Web.Config**
+###**Web.Config**
 ```XML
 
   <connectionStrings>
@@ -53,7 +53,7 @@ All changes is marked with "region PQ Change"
 ```
 
 
-**IdentityConfig.cs** (folder App_Start)
+###**IdentityConfig.cs** (folder App_Start)
 ```C#
 
    public class ApplicationUserManager : UserManager<ApplicationUser>
@@ -143,7 +143,7 @@ All changes is marked with "region PQ Change"
 
 ```
 
-**AccountControlle** (folder Controllers)
+###**AccountControlle** (folder Controllers)
 ```C#
 
        [HttpPost]
@@ -179,7 +179,7 @@ All changes is marked with "region PQ Change"
 
 ```
 
-**AccountControlle** (folder Filters)
+###**AccountControlle** (folder Filters)
 Add new folder *Filters*
 Add new class *AuthorizePasswordCanExpiere.cs*
 
@@ -232,7 +232,7 @@ namespace IdentityPasswordExpiration.Filters
 
 ```
 
-**HomeControlle** (folder Controllers)
+###**HomeControlle** (folder Controllers)
 ```C#
 
        public class HomeController : Controller
@@ -265,7 +265,7 @@ namespace IdentityPasswordExpiration.Filters
    
 ```
 
-**About.cshtml** (folder Views\Home)
+###**About.cshtml** (folder Views\Home)
 ```cshtml
 
 @{
@@ -284,8 +284,7 @@ namespace IdentityPasswordExpiration.Filters
 
 ```
 
-**ManageControlle** (folder Controllers)
-
+###**ManageControlle** (folder Controllers)
 ```C#
 
         public ActionResult ChangePassword(string reason)
@@ -299,7 +298,7 @@ namespace IdentityPasswordExpiration.Filters
 
 ```
 
-**ChangePassword.cshtml** (folder Views\Manage)
+###**ChangePassword.cshtml** (folder Views\Manage)
 ```cshtml
 
 <h2>@ViewBag.Title.</h2>
