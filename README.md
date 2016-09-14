@@ -143,7 +143,7 @@ All changes is marked with "region PQ Change"
 
 ```
 
-###**AccountControlle.cs** (folder Controllers)
+###**AccountController.cs** (folder Controllers)
 ```C#
 
        [HttpPost]
