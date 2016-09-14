@@ -13,9 +13,10 @@ Make a new project. Use .NET Framework 4.6
 
 All changes is marked with "region PQ Change"
 
-###Change IdentitityModels.cs (folder Models)
+###Change "IdentitityModels.cs" (In folder Models)
 
-```
+```C#
+
     public class ApplicationUser : IdentityUser
     {
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
