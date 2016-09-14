@@ -39,6 +39,20 @@ All changes is marked with "region PQ Change"
     
 ```
 
+**Web.Config**
+```XML
+
+  <connectionStrings>
+   <!-- #region PQ Change -->
+    <add name="DefaultConnection" 
+         providerName="System.Data.SqlClient" 
+         connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=IdentityPasswordExpiration;Integrated Security=SSPI" />
+   <!-- #endregion PQ Change-->      
+  </connectionStrings>
+
+```
+
+
 **IdentityConfig.cs** (folder App_Start)
 ```C#
 
@@ -266,6 +280,35 @@ namespace IdentityPasswordExpiration.Filters
 {
     <div class="alert alert-danger">Consider to change your password.</div>
 }
+<!-- #endregion PQ Change-->
+
+```
+
+**ManageControlle** (folder Controllers)
+
+```C#
+
+        public ActionResult ChangePassword(string reason)
+        {
+            #region PQ Change
+            if (reason != null) { ViewBag.reason= reason;}
+            #endregion PQ Change
+
+            return View();
+        }
+
+```
+
+**ChangePassword.cshtml** (folder Views\Manage)
+```cshtml
+
+<h2>@ViewBag.Title.</h2>
+
+<!-- #region PQ Change -->
+    @if (ViewBag.reason != null)
+    {
+        <div class="alert alert-danger">@ViewBag.reason</div>
+    }
 <!-- #endregion PQ Change-->
 
 ```
