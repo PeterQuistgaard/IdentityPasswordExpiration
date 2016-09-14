@@ -143,7 +143,7 @@ All changes is marked with "region PQ Change"
 
 ```
 
-###**AccountControlle** (folder Controllers)
+###**AccountControlle.cs** (folder Controllers)
 ```C#
 
        [HttpPost]
@@ -179,11 +179,12 @@ All changes is marked with "region PQ Change"
 
 ```
 
-###**AccountControlle** (folder Filters)
+###**AuthorizePasswordCanExpiere.cs** (folder Filters)
 Add new folder *Filters*
 Add new class *AuthorizePasswordCanExpiere.cs*
 
 ```C#
+
 namespace IdentityPasswordExpiration.Filters
 {
     #region PQ Change
@@ -232,7 +233,7 @@ namespace IdentityPasswordExpiration.Filters
 
 ```
 
-###**HomeControlle** (folder Controllers)
+###**HomeController.cs** (folder Controllers)
 ```C#
 
        public class HomeController : Controller
@@ -284,7 +285,7 @@ namespace IdentityPasswordExpiration.Filters
 
 ```
 
-###**ManageControlle** (folder Controllers)
+###**ManageController.cs** (folder Controllers)
 ```C#
 
         public ActionResult ChangePassword(string reason)
