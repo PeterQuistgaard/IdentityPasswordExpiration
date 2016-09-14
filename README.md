@@ -2,7 +2,7 @@
 
 Add password expiration to ASP.Net Identity 2.2.1
 
-Make a new project. Use ASP.NET WebApplication (.NET Framework) 
+Create a new project. Use ASP.NET WebApplication (.NET Framework) 
 
 
 ![Image01](https://raw.githubusercontent.com/PeterQuistgaard/IdentityPasswordExpiration/master/image01.png)
@@ -11,7 +11,10 @@ Make a new project. Use ASP.NET WebApplication (.NET Framework)
 
 ![Image02](https://raw.githubusercontent.com/PeterQuistgaard/IdentityPasswordExpiration/master/image02.png)
 
-All changes is marked with "region PQ Change"
+=========================================
+##Make some changes in the generated code.
+
+All changes is marked with "#region PQ Change"
 
 ###**IdentitityModels.cs** (folder Models)
 
