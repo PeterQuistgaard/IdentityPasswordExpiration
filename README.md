@@ -129,8 +129,143 @@ All changes is marked with "region PQ Change"
 
 ```
 
-**x** (folder y)
+**AccountControlle** (folder Controllers)
 ```C#
 
+       [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Register(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                #region PQ Change
+                user.LastPasswordChangedDateUtc = DateTime.UtcNow;
+                #endregion PQ Change
+                var result = await UserManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+                    
+                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
+                    // Send an email with this link
+                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+                    return RedirectToAction("Index", "Home");
+                }
+                AddErrors(result);
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+```
+
+**AccountControlle** (folder Filters)
+Add new folder *Filters*
+Add new class *AuthorizePasswordCanExpiere.cs*
+
+```C#
+namespace IdentityPasswordExpiration.Filters
+{
+    #region PQ Change
+    public class AuthorizePasswordCanExpiereAttribute : AuthorizeAttribute
+    {
+        public override void OnAuthorization(AuthorizationContext filterContext)
+        {
+            IPrincipal user = filterContext.HttpContext.User;
+            if(user!=null && user.Identity.IsAuthenticated)
+            {
+                var identity = (ClaimsPrincipal)Thread.CurrentPrincipal;
+                var stingLastPasswordChangedDateUtc = identity.Claims.Where(c => c.Type == "LastPasswordChangedDateUtc").Select(c => c.Value).SingleOrDefault();
+
+                DateTime LastPasswordChangedDateUtc;
+                if (!DateTime.TryParse(stingLastPasswordChangedDateUtc, out LastPasswordChangedDateUtc))
+                {
+                    // handle parse failure
+                }
+
+                int PasswordExpirationAfterDays = 90;
+                TimeSpan timespan = DateTime.UtcNow - LastPasswordChangedDateUtc;
+                int PasswordWillExpiere = (int)(PasswordExpirationAfterDays - timespan.TotalSeconds);
+                //int PasswordWillExpiere = (int)PasswordExpirationAfterDays - timespan.TotalDays;
+
+                if (PasswordWillExpiere <= 0)
+                {         
+                    filterContext.Result = new RedirectToRouteResult(
+                       new RouteValueDictionary
+                       {
+                            { "controller", "Manage" },
+                            { "action", "ChangePassword" },
+                            { "reason","Your password has expiered. Please change your password."}                         
+                       });
+                }
+                else
+                {
+                   filterContext.Controller.ViewData.Add("PasswordWillExpiere", PasswordWillExpiere); 
+                }
+            }
+
+            base.OnAuthorization(filterContext);    
+        }
+    }
+    #endregion PQ Change
+}
+
+```
+
+**HomeControlle** (folder Controllers)
+```C#
+
+       public class HomeController : Controller
+    {
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        #region PQ Change
+        [AuthorizePasswordCanExpiere]
+        #endregion PQ Change
+        public ActionResult About()
+        {
+            ViewBag.Message = "Your application description page.";
+
+            return View();
+        }
+
+        #region PQ Change
+        [Authorize]
+        #endregion PQ Change
+        public ActionResult Contact()
+        {
+            ViewBag.Message = "Your contact page.";
+
+            return View();
+        }
+    }
+   
+```
+
+**About.cshtml** (folder Views\Home)
+```cshtml
+
+@{
+    ViewBag.Title = "About";
+}
+<h2>@ViewBag.Title.</h2>
+<hr/>
+
+<!-- #region PQ Change -->
+<h3>Your password will expiere in @ViewData["PasswordWillExpiere"] days.</h3>
+@if ((int)ViewData["PasswordWillExpiere"] < 40)
+{
+    <div class="alert alert-danger">Consider to change your password.</div>
+}
+<!-- #endregion PQ Change-->
 
 ```
