@@ -19,7 +19,9 @@ namespace IdentityPasswordExpiration.Controllers
             return View();
         }
 
+        #region PQ Change
         [AuthorizePasswordCanExpiere]
+        #endregion PQ Change
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
@@ -27,7 +29,9 @@ namespace IdentityPasswordExpiration.Controllers
             return View();
         }
 
+        #region PQ Change
         [Authorize]
+        #endregion PQ Change
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";

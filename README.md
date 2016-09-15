@@ -11,12 +11,12 @@ Create a new project. Use ASP.NET WebApplication (.NET Framework)
 
 ![Image02](https://raw.githubusercontent.com/PeterQuistgaard/IdentityPasswordExpiration/master/image02.png)
 
-=========================================
-##Make some changes in the generated code.
+=========================================  
+## Make some changes in the generated code.
 
 All changes is marked with "#region PQ Change"
 
-###**IdentitityModels.cs** (folder Models)
+### **IdentitityModels.cs** (folder Models)
 
 ```C#
 
@@ -42,7 +42,7 @@ All changes is marked with "#region PQ Change"
     
 ```
 
-###**Web.Config**
+### **Web.Config**
 ```XML
 
   <connectionStrings>
@@ -56,7 +56,7 @@ All changes is marked with "#region PQ Change"
 ```
 
 
-###**IdentityConfig.cs** (folder App_Start)
+### **IdentityConfig.cs** (folder App_Start)
 ```C#
 
    public class ApplicationUserManager : UserManager<ApplicationUser>
@@ -146,7 +146,7 @@ All changes is marked with "#region PQ Change"
 
 ```
 
-###**AccountController.cs** (folder Controllers)
+### **AccountController.cs** (folder Controllers)
 ```C#
 
        [HttpPost]
@@ -182,7 +182,7 @@ All changes is marked with "#region PQ Change"
 
 ```
 
-###**AuthorizePasswordCanExpiere.cs** (folder Filters)
+### **AuthorizePasswordCanExpiere.cs** (folder Filters)
 Add new folder *Filters*
 Add new class *AuthorizePasswordCanExpiere.cs*
 
@@ -236,7 +236,11 @@ namespace IdentityPasswordExpiration.Filters
 
 ```
 
-###**HomeController.cs** (folder Controllers)
+
+### **HomeController.cs** (folder Controllers)
+Decorate "ActionResult About" with the new attribute "[AuthorizePasswordCanExpiere]"  
+And "ActionResult Contact" with "[Authorize]"  
+
 ```C#
 
        public class HomeController : Controller
@@ -269,7 +273,7 @@ namespace IdentityPasswordExpiration.Filters
    
 ```
 
-###**About.cshtml** (folder Views\Home)
+### **About.cshtml** (folder Views\Home)
 ```cshtml
 
 @{
@@ -287,8 +291,14 @@ namespace IdentityPasswordExpiration.Filters
 <!-- #endregion PQ Change-->
 
 ```
+The View "About" use ```@ViewData["PasswordWillExpiere"]``` from the filter AuthorizePasswordCanExpiereAttribute.  
+Remark: Seconds is used as days - just when testing.   
 
-###**ManageController.cs** (folder Controllers)
+![Image04](https://raw.githubusercontent.com/PeterQuistgaard/IdentityPasswordExpiration/master/image04.png)
+
+
+
+### **ManageController.cs** (folder Controllers)
 ```C#
 
         public ActionResult ChangePassword(string reason)
@@ -302,7 +312,7 @@ namespace IdentityPasswordExpiration.Filters
 
 ```
 
-###**ChangePassword.cshtml** (folder Views\Manage)
+### **ChangePassword.cshtml** (folder Views\Manage)
 ```cshtml
 
 <h2>@ViewBag.Title.</h2>
@@ -315,3 +325,8 @@ namespace IdentityPasswordExpiration.Filters
 <!-- #endregion PQ Change-->
 
 ```
+The parameter "reason" gives a reason, why the user need to change password.  
+
+![Image03](https://raw.githubusercontent.com/PeterQuistgaard/IdentityPasswordExpiration/master/image03.png)
+
+Suggestions for improvement: Create Validator to force user not to reuse old passwords.  
