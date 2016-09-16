@@ -15,11 +15,10 @@ namespace IdentityPasswordExpiration.Filters
     {
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
-            IPrincipal user = filterContext.HttpContext.User;
+            var user = ClaimsPrincipal.Current;
             if(user!=null && user.Identity.IsAuthenticated)
-            {
-                var identity = (ClaimsPrincipal)Thread.CurrentPrincipal;
-                var stingLastPasswordChangedDateUtc = identity.Claims.Where(c => c.Type == "LastPasswordChangedDateUtc").Select(c => c.Value).SingleOrDefault();
+            { 
+                var stingLastPasswordChangedDateUtc = user.FindFirst("LastPasswordChangedDateUtc").Value;
 
                 DateTime LastPasswordChangedDateUtc;
                 if (!DateTime.TryParse(stingLastPasswordChangedDateUtc, out LastPasswordChangedDateUtc))
@@ -29,8 +28,8 @@ namespace IdentityPasswordExpiration.Filters
 
                 int PasswordExpirationAfterDays = 90;
                 TimeSpan timespan = DateTime.UtcNow - LastPasswordChangedDateUtc;
-                int PasswordWillExpiere = (int)(PasswordExpirationAfterDays - timespan.TotalSeconds);
-                //int PasswordWillExpiere = (int)PasswordExpirationAfterDays - timespan.TotalDays;
+                int PasswordWillExpiere = (int)(PasswordExpirationAfterDays - timespan.TotalSeconds);//Only when testing
+                //int PasswordWillExpiere = (int)PasswordExpirationAfterDays - timespan.TotalDays;//Use in production
 
                 if (PasswordWillExpiere <= 0)
                 {         
